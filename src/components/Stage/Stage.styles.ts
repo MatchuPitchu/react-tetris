@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { STAGE_WIDTH, STAGE_HEIGHT } from '../../setup';
+import { STAGE_WIDTH, STAGE_HEIGHT } from '../../utils/setup';
 
 export const StyledStage = styled.div`
   display: grid;

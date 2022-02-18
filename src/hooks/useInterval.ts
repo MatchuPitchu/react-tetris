@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+// hook to create interval instead of using JS built-in setInterval
 export const useInterval = (callback: () => void, delay: number | null) => {
   const savedCallback = useRef<null | (() => void)>(null);
   // Remember the latest callback
