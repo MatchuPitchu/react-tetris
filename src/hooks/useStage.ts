@@ -6,10 +6,31 @@ import type { StageType } from '../components/Stage/Stage';
 
 export const useStage = (player: Player, resetPlayer: () => void) => {
   const [stage, setStage] = useState(createStage()); // create stage while first rendering
+  const [rowsCleared, setRowsCleared] = useState(0);
 
   useEffect(() => {
     // check if player exists
     if (!player.position) return;
+
+    setRowsCleared(0);
+
+    const removeFullRows = (newStage: StageType): StageType => {
+      return newStage.reduce((accumulator, row) => {
+        // if NO 0, row is full
+        const findCellWithZero = row.some((cell) => cell[0] === 0);
+        if (!findCellWithZero) {
+          // increase cleared rows
+          setRowsCleared((prev) => prev + 1);
+          // create new empty row at beginning of stage array to push tetrominos down
+          // instead of returning cleared row
+          accumulator.unshift(new Array(newStage[0].length).fill([0, 'clear'] as StageCell));
+          return accumulator;
+        }
+
+        accumulator.push(row);
+        return accumulator;
+      }, [] as StageType);
+    };
 
     const updateStage = (prevStage: StageType): StageType => {
       // 1) CLEAR STATGE and REMOVE ALL TETRIS ITEMS IN CERTAIN CELL
@@ -21,23 +42,36 @@ export const useStage = (player: Player, resetPlayer: () => void) => {
       // 2) LOOP OVER GAME STAGE to DRAW NEXT MOVE (-> how to position tetris element)
       // "forEach" can be changed to better for loop (for ... in OR for ...of -> CHECK)
       player.tetromino.forEach((row, y) => {
-        row.forEach((cellValue, x) => {
+        row.forEach((col, x) => {
           // if cell is NOT empty then you have a cell with a piece of tetris element
-          if (cellValue !== 0) {
+          if (col !== 0) {
             // select the current position of this piece
             newStage[y + player.position.y][x + player.position.x] = [
-              cellValue,
+              col,
               `${player.collided ? 'merged' : 'clear'}`, // if player has collided with other tetris element, then it's "merged"
             ];
           }
         });
       });
 
+      // trigger next tetris element
+      if (player.collided) {
+        resetPlayer();
+        return removeFullRows(newStage);
+      }
+
       return newStage;
     };
 
     setStage((prev) => updateStage(prev));
-  }, [player.collided, player.position, player.tetromino]);
+  }, [
+    player.collided,
+    player.position,
+    player.position?.x,
+    player.position?.y,
+    player.tetromino,
+    resetPlayer,
+  ]);
 
-  return { stage, setStage };
+  return { stage, setStage, rowsCleared };
 };
