@@ -58,16 +58,13 @@ export const usePlayer = () => {
     y: number;
     collided: boolean;
   }): void => {
-    setPlayer((prev) => {
-      return {
-        ...prev,
-        position: {
-          x: (prev.position.x += x),
-          y: (prev.position.y += y),
-        },
-        collided,
-      };
-    });
+    const newPlayer = {
+      ...player,
+      position: { x: (player.position.x += x), y: (player.position.y += y) },
+      collided,
+    };
+
+    setPlayer(newPlayer);
   };
 
   // reset player for restart of game

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { createStage, isColliding } from './utils/gameHelpers';
 // custom hooks
 import { useInterval } from './hooks/useInterval';
@@ -16,8 +16,6 @@ import { DROPTIME_NORMAL, DROPTIME_FAST } from './utils/setup';
 
 // CSS
 import classes from './App.module.css';
-
-let count = 0;
 
 const App = () => {
   const [dropTime, setDroptime] = useState<number | null>(null); // to stop time intervall from falling elements
@@ -86,7 +84,6 @@ const App = () => {
 
     // first check possible collision when moving 1 cell down
     if (!isColliding(player, stage, { x: 0, y: 1 })) {
-      console.log('COUNT', count++);
       updatePlayerPosition({ x: 0, y: 1, collided: false });
     } else {
       // game over
