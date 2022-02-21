@@ -1,8 +1,8 @@
-export const STAGE_WIDTH = 12;
-export const STAGE_HEIGHT = 20;
+export const STAGE_WIDTH = 20; // normal = 12
+export const STAGE_HEIGHT = 20; // normal = 20
 export const ROWPOINTS = [40, 100, 300, 1200]; // points when solving rows (1, 2, 3 or 4 rows together)
-export const DROPTIME_NORMAL = 1000; // standard = 1000
-export const DROPTIME_FAST = 30;
+export const DROPTIME_NORMAL = 1000; // normal = 1000
+export const DROPTIME_FAST = 30; // normal = 30
 
 export const TETROMINOS: {
   [property: string | number]: {

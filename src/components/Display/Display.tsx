@@ -1,4 +1,4 @@
-import { StyledDisplay } from './Display.styles';
+import classes from './Display.module.css';
 
 type Props = {
   gameOver?: boolean;
@@ -6,8 +6,11 @@ type Props = {
 };
 
 const Display: React.FC<Props> = ({ gameOver, text }) => {
-  // with styled components you can define css rules dynamically
-  return <StyledDisplay gameOver={gameOver}>{text}</StyledDisplay>;
+  return (
+    <div className={`${classes['game-status']} ${gameOver ? classes['game-status--over'] : ''}`}>
+      {text}
+    </div>
+  );
 };
 
 export default Display;

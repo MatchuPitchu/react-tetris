@@ -1,0 +1,9 @@
+.cell {
+  width: auto;
+  background: rgba(0, 0, 0, 0.8);
+  border: '0px solid';
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  border-right-color: rgba(0, 0, 0, 1);
+  border-top-color: rgba(0, 0, 0, 1);
+  border-left-color: rgba(0, 0, 0, 0.3);
+}

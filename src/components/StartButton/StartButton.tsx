@@ -1,11 +1,15 @@
-import { StyledStartButton } from './StartButton.styles';
+import classes from './StartButton.module.css';
 
 type Props = {
   callback: () => void;
 };
 
 const StartButton: React.FC<Props> = ({ callback }) => {
-  return <StyledStartButton onClick={callback}>StartButton</StyledStartButton>;
+  return (
+    <button className={classes.btn} onClick={callback}>
+      Start
+    </button>
+  );
 };
 
 export default StartButton;
