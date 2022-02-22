@@ -16,6 +16,7 @@
   padding: 10vh 10vw;
   margin: 0 auto;
   height: 100%;
+  position: relative;
 }
 
 .heading {

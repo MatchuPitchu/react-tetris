@@ -13,7 +13,6 @@ import Button from './components/Button/Button';
 import { DROPTIME_NORMAL, DROPTIME_FAST } from './utils/setup';
 // CSS
 import classes from './App.module.css';
-import Garbage from './components/Garbage/Garbage';
 
 const App = () => {
   const [dropTime, setDroptime] = useState<number | null>(null); // to stop time intervall from falling elements
@@ -22,8 +21,11 @@ const App = () => {
   const gameAreaRef = useRef<HTMLDivElement>(null);
 
   const { player, updatePlayerPosition, resetPlayer, playerRotate } = usePlayer();
-  const { stage, setStage, rowsCleared } = useStage(player, resetPlayer);
-  const { score, setScore, rows, setRows, level, setLevel } = useGameStatus(rowsCleared);
+  const { stage, setStage, rowsSuccesCleared, rowsFailCleared } = useStage(player, resetPlayer);
+  const { score, setScore, hits, setHits, fails, setFails, level, setLevel } = useGameStatus(
+    rowsSuccesCleared,
+    rowsFailCleared
+  );
 
   // define how to move the current players position
   const movePlayer = (direction: number) => {
@@ -52,7 +54,8 @@ const App = () => {
     resetPlayer();
     setScore(0);
     setLevel(1);
-    setRows(0);
+    setHits(0);
+    setFails(0);
     setGameOver(false);
   };
 
@@ -80,8 +83,8 @@ const App = () => {
   };
 
   const drop = (): void => {
-    // increase level + speed when player has cleared x rows (here: 10)
-    if (rows > level * 10) {
+    // increase level + speed when player has made x hits (here: 10)
+    if (hits > level * 10) {
       setLevel((prev) => prev + 1);
       setDroptime(DROPTIME_NORMAL / level + 200);
     }
@@ -117,7 +120,8 @@ const App = () => {
       <>
         <Button callback={handleStartGame}>Neustart</Button>
         <Display text={`Score: ${score}`} />
-        <Display text={`Rows: ${rows}`} />
+        <Display text={`Richtig sortiert: ${hits}`} />
+        <Display text={`Falsch sortiert: ${fails}`} />
         <Display text={`Level: ${level}`} />
         <Button callback={handlePauseGame}>{isPause ? 'Weiter' : 'Pause'}</Button>
       </>
@@ -136,8 +140,7 @@ const App = () => {
       <div className={classes.tetris}>
         <div className={classes.heading}>{heading}</div>
         {/* stage is NOT responsive yet + actions with keyboard */}
-        <Stage stage={stage} />
-        <Garbage />
+        <Stage stage={stage} fails={fails} />
       </div>
     </div>
   );

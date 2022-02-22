@@ -1,4 +1,7 @@
 .garbage {
+  grid-column: 1 / -1; /* span over full width */
+  position: absolute;
+  bottom: 0;
   display: flex;
   flex-flow: row wrap;
   align-items: flex-end;
@@ -8,4 +11,18 @@
 .garbage > * {
   flex: 1 1 20%;
   max-width: 20%;
+}
+
+.pile {
+  display: flex;
+  flex-direction: column;
+}
+
+.pile > * {
+  margin-top: -2rem;
+  transform: translateX(1rem);
+}
+
+.pile > *:nth-child(even) {
+  transform: translateX(-1rem);
 }
