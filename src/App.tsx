@@ -5,20 +5,19 @@ import { useInterval } from './hooks/useInterval';
 import { usePlayer } from './hooks/usePlayer';
 import { useStage } from './hooks/useStage';
 import { useGameStatus } from './hooks/useGameStatus';
-
 // Components
 import Stage from './components/Stage/Stage';
 import Display from './components/Display/Display';
 import Button from './components/Button/Button';
-
 // Variables
 import { DROPTIME_NORMAL, DROPTIME_FAST } from './utils/setup';
-
 // CSS
 import classes from './App.module.css';
+import Garbage from './components/Garbage/Garbage';
 
 const App = () => {
   const [dropTime, setDroptime] = useState<number | null>(null); // to stop time intervall from falling elements
+  const [isPause, setIsPause] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(true);
   const gameAreaRef = useRef<HTMLDivElement>(null);
 
@@ -55,6 +54,11 @@ const App = () => {
     setLevel(1);
     setRows(0);
     setGameOver(false);
+  };
+
+  const handlePauseGame = (): void => {
+    !isPause ? setDroptime(null) : setDroptime(DROPTIME_NORMAL);
+    setIsPause((prev) => !prev);
   };
 
   // define the move itself; repeat = if key is hold or not by user
@@ -105,15 +109,17 @@ const App = () => {
     heading = (
       <>
         <Display gameOver={gameOver} text='Game Over' />
-        <Button callback={handleStartGame} />
+        <Button callback={handleStartGame}>Start</Button>
       </>
     );
   } else {
     heading = (
       <>
+        <Button callback={handleStartGame}>Neustart</Button>
         <Display text={`Score: ${score}`} />
         <Display text={`Rows: ${rows}`} />
         <Display text={`Level: ${level}`} />
+        <Button callback={handlePauseGame}>{isPause ? 'Weiter' : 'Pause'}</Button>
       </>
     );
   }
@@ -131,6 +137,7 @@ const App = () => {
         <div className={classes.heading}>{heading}</div>
         {/* stage is NOT responsive yet + actions with keyboard */}
         <Stage stage={stage} />
+        <Garbage />
       </div>
     </div>
   );

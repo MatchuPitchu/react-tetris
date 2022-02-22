@@ -1,0 +1,11 @@
+.garbage {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.garbage > * {
+  flex: 1 1 20%;
+  max-width: 20%;
+}

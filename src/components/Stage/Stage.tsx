@@ -15,8 +15,8 @@ const Stage: React.FC<Props> = ({ stage }) => {
     <div
       className={classes.stage}
       style={{
-        gridTemplateColumns: `repeat(${STAGE_WIDTH}, 30px)`,
-        gridTemplateRows: `repeat(${STAGE_HEIGHT}, 30px)`,
+        gridTemplateColumns: `repeat(${STAGE_WIDTH}, 1fr)`,
+        gridTemplateRows: `repeat(${STAGE_HEIGHT}, 1fr)`,
       }}
     >
       {/* map through entire game stage that is a 2-dimensional array; x = x axis index */}

@@ -1,13 +1,8 @@
-/* .app {
-  width: 100%;
-  height: 100vh;
-  background-image: linear-gradient(to right bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)),
-    url('./img/muelleimer-leon-seibert-unsplash.jpg');
+.wrapper {
+  background-image: linear-gradient(to right bottom, rgb(255, 102, 0, 0.5), rgb(255, 102, 0, 0.3)),
+    url('./assets/img/muellabfuhr_abfalltrennung_tonnen_1500x750_3x2_rdax_85s-copyright-bsr.jpg');
   background-size: cover;
   background-position: center;
-} */
-
-.wrapper {
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -18,8 +13,9 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 10vh 10vw;
   margin: 0 auto;
+  height: 100%;
 }
 
 .heading {

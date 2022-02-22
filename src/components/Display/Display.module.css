@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   padding: 1rem 2rem;
+  text-align: center;
 }
 
 .game-status--over {

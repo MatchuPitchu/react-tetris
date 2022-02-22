@@ -4,12 +4,12 @@ type Props = {
   callback: () => void;
 };
 
-const StartButton: React.FC<Props> = ({ callback }) => {
+const Button: React.FC<Props> = ({ callback, children }) => {
   return (
     <button className={classes.btn} onClick={callback}>
-      Start
+      {children}
     </button>
   );
 };
 
-export default StartButton;
+export default Button;

@@ -1,6 +1,7 @@
 .stage {
   display: grid;
   grid-gap: 1px;
-  border: 1px solid #777;
-  background: #222;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(34, 34, 34, 0.2);
 }
