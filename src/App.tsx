@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { createStage, isColliding } from './utils/gameHelpers';
 // custom hooks
 import { useInterval } from './hooks/useInterval';
@@ -9,7 +9,7 @@ import { useGameStatus } from './hooks/useGameStatus';
 // Components
 import Stage from './components/Stage/Stage';
 import Display from './components/Display/Display';
-import StartButton from './components/StartButton/StartButton';
+import Button from './components/Button/Button';
 
 // Variables
 import { DROPTIME_NORMAL, DROPTIME_FAST } from './utils/setup';
@@ -100,35 +100,37 @@ const App = () => {
     drop();
   }, dropTime);
 
+  let heading;
+  if (gameOver) {
+    heading = (
+      <>
+        <Display gameOver={gameOver} text='Game Over' />
+        <Button callback={handleStartGame} />
+      </>
+    );
+  } else {
+    heading = (
+      <>
+        <Display text={`Score: ${score}`} />
+        <Display text={`Rows: ${rows}`} />
+        <Display text={`Level: ${level}`} />
+      </>
+    );
+  }
+
   return (
-    <div className={classes.app}>
-      <div
-        className={classes.wrapper}
-        role='button'
-        tabIndex={0}
-        onKeyDown={move} // triggered when key is pressed
-        onKeyUp={keyUp} // triggered when key is released
-        ref={gameAreaRef}
-      >
-        <div className={classes.tetris}>
-          <div className={classes.display}>
-            {/* check if gameover */}
-            {gameOver ? (
-              <>
-                <Display gameOver={gameOver} text='Game Over' />
-                <StartButton callback={handleStartGame} />
-              </>
-            ) : (
-              <>
-                <Display text={`Score: ${score}`} />
-                <Display text={`Rows: ${rows}`} />
-                <Display text={`Level: ${level}`} />
-              </>
-            )}
-          </div>
-          {/* stage is NOT responsive yet + actions with keyboard */}
-          <Stage stage={stage} />
-        </div>
+    <div
+      className={classes.wrapper}
+      role='button'
+      tabIndex={0}
+      onKeyDown={move} // triggered when key is pressed
+      onKeyUp={keyUp} // triggered when key is released
+      ref={gameAreaRef}
+    >
+      <div className={classes.tetris}>
+        <div className={classes.heading}>{heading}</div>
+        {/* stage is NOT responsive yet + actions with keyboard */}
+        <Stage stage={stage} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import classes from './StartButton.module.css';
+import classes from './Button.module.css';
 
 type Props = {
   callback: () => void;

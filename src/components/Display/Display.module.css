@@ -1,15 +1,9 @@
 .game-status {
   display: flex;
-  align-items: space-between;
-  font-size: 0.8rem;
-  color: #999;
-  background: #111;
-  margin: 0 0 20px 0;
-  padding: 20px;
-  height: 100%;
-  border-radius: 4px;
+  align-items: center;
+  padding: 1rem 2rem;
 }
 
 .game-status--over {
-  color: red;
+  background-color: #9b0404;
 }
