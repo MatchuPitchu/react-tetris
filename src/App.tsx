@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { createStage, isColliding } from './utils/gameHelpers';
 // custom hooks
 import { useInterval } from './hooks/useInterval';
@@ -18,6 +18,8 @@ const App = () => {
   const [dropTime, setDroptime] = useState<number | null>(null); // to stop time intervall from falling elements
   const [isPause, setIsPause] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(true);
+  const [isMouseLeftDown, setIsMouseLeftDown] = useState<boolean>(false);
+  const [isMouseRightDown, setIsMouseRightDown] = useState<boolean>(false);
   const gameAreaRef = useRef<HTMLDivElement>(null);
 
   const { player, updatePlayerPosition, resetPlayer, playerRotate } = usePlayer();
@@ -28,13 +30,16 @@ const App = () => {
   );
 
   // define how to move the current players position
-  const movePlayer = (direction: number) => {
-    // before updating players position (-> execution of move), check if there would be collision with this move
-    // y=0 since move is only possible horizontally
-    if (!isColliding(player, stage, { x: direction, y: 0 })) {
-      updatePlayerPosition({ x: direction, y: 0, collided: false });
-    }
-  };
+  const movePlayer = useCallback(
+    (direction: number) => {
+      // before updating players position (-> execution of move), check if there would be collision with this move
+      // y=0 since move is only possible horizontally
+      if (!isColliding(player, stage, { x: direction, y: 0 })) {
+        updatePlayerPosition({ x: direction, y: 0, collided: false });
+      }
+    },
+    [player, stage, updatePlayerPosition]
+  );
 
   const keyUp = ({ keyCode }: { keyCode: number }): void => {
     if (gameOver) return;
@@ -81,6 +86,19 @@ const App = () => {
       playerRotate(stage);
     }
   };
+
+  useEffect(() => {
+    if (!isMouseLeftDown) return;
+    let timerId = setInterval(() => movePlayer(-1), 100);
+    return () => clearInterval(timerId);
+  }, [isMouseLeftDown, movePlayer]);
+
+  useEffect(() => {
+    if (!isMouseRightDown) return;
+
+    let timerId = setInterval(() => movePlayer(1), 100);
+    return () => clearInterval(timerId);
+  }, [isMouseRightDown, movePlayer]);
 
   const drop = (): void => {
     // increase level + speed when player has made x hits (here: 10)
@@ -141,6 +159,22 @@ const App = () => {
         <div className={classes.heading}>{heading}</div>
         {/* stage is NOT responsive yet + actions with keyboard */}
         <Stage stage={stage} fails={fails} />
+        <div className={classes.controls}>
+          <button
+            onMouseDown={() => setIsMouseLeftDown(true)}
+            onMouseUp={() => setIsMouseLeftDown(false)}
+            className={classes['controls__btn--left']}
+          >
+            &lang;
+          </button>
+          <button
+            onMouseDown={() => setIsMouseRightDown(true)}
+            onMouseUp={() => setIsMouseRightDown(false)}
+            className={classes['controls__btn--right']}
+          >
+            &rang;
+          </button>
+        </div>
       </div>
     </div>
   );
